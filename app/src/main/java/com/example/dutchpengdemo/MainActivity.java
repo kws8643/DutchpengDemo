@@ -35,8 +35,6 @@ public class MainActivity extends AppCompatActivity {
 
         initParams();
 
-        Toast.makeText(getApplicationContext(), dUser.getUid() + dUser.getDisplayName(), Toast.LENGTH_SHORT).show();
-
         readUserDatabase();
     }
 
@@ -86,6 +84,8 @@ public class MainActivity extends AppCompatActivity {
         Gson gson = new Gson();
         String json = gson.toJson(dutchpengsUser);
         Log.d(MAIN_TAG, json);
+
+        Toast.makeText(getApplicationContext(), "안녕하세요, " + userName + " 회원님.", Toast.LENGTH_SHORT).show();
 
     }
 
