@@ -120,18 +120,6 @@ public class LoginSigninFragment extends Fragment {
         user_info.put("userName", input_name.getText().toString());
         user_info.put("userPhone", input_phone.getText().toString());
 
-        /*db.collection("Users").add(user_info)
-                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-                    @Override
-                    public void onSuccess(DocumentReference documentReference) {
-
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                    }
-                });*/
 
         db.collection("Users").document(user_uid).set(user_info)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {

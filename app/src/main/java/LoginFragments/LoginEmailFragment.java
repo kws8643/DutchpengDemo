@@ -89,11 +89,10 @@ public class LoginEmailFragment extends Fragment {
 
                     Log.d(LOGIN_EMAIL_TAG, "loginWithEmail: success");
                     FirebaseUser user = mAuth.getCurrentUser();
-                    // 이후 진행.
 
                     activity.login();
 
-                } else { // 없음을 확인, 회원가입 진행.
+                } else {
 
                     Log.w(LOGIN_EMAIL_TAG, "loginWithEmail: failure");
                     Toast.makeText(activity.getApplicationContext(), "아이디 / 비번 오류", Toast.LENGTH_SHORT).show();
