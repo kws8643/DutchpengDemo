@@ -1,5 +1,6 @@
 package LoginFragments;
 
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -99,8 +100,11 @@ public class LoginFragment extends Fragment {
             public void run(boolean success) {
                 if (success) {
 
-                    //String accToken;
 
+                    // 기존 가입 회원인지 확인 필요 -> 회원이면 MainActivity로 넘어가서 객체 생성.
+                    //                        -> 아니라면 naver 연동 완료 후 signin 으로 이동.
+
+//                    new RequestNaverAPI().execute();
 
                     return;
 
@@ -117,7 +121,30 @@ public class LoginFragment extends Fragment {
     }
 
 
+    private class RequestNaverAPI extends AsyncTask<Void, Void, String>{
 
+        /*@Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }*/
+
+        @Override
+        protected String doInBackground(Void... voids) {
+
+            String naverRequsetUrl = "https://openapi.naver.com/v1/nid/me";
+            String accessToken = mNaverSession.getAccessToken(activity.getApplicationContext());
+
+
+            return mNaverSession.requestApi(activity.getApplicationContext(), accessToken, naverRequsetUrl);
+        }
+
+        @Override
+        protected void onPostExecute(String str) {
+            super.onPostExecute(str);
+
+
+        }
+    }
 
 
 

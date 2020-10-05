@@ -5,8 +5,15 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import android.content.Intent;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
+import android.content.pm.Signature;
 import android.os.Bundle;
+import android.util.Base64;
+import android.util.Log;
 import android.view.Window;
+
+import java.security.MessageDigest;
 
 import LoginFragments.LoginEmailFragment;
 import LoginFragments.LoginFragment;
@@ -36,6 +43,7 @@ public class LoginActivity extends AppCompatActivity {
 
         manager.beginTransaction().add(R.id.frame_login, frag_login).commit();
 
+        getAppKeyHash();
     }
 
     public void changeFragment(int index) {
@@ -62,5 +70,22 @@ public class LoginActivity extends AppCompatActivity {
         startActivity(login_intent);
 
         finish();
+    }
+
+
+    private void getAppKeyHash() {
+        try {
+            PackageInfo info = getPackageManager().getPackageInfo(getPackageName(), PackageManager.GET_SIGNATURES);
+            for (Signature signature : info.signatures) {
+                MessageDigest md;
+                md = MessageDigest.getInstance("SHA");
+                md.update(signature.toByteArray());
+                String something = new String(Base64.encode(md.digest(), 0));
+                Log.e("Hash key", something);
+            }
+        } catch (Exception e) {
+            // TODO Auto-generated catch block
+            Log.e("name not found", e.toString());
+        }
     }
 }

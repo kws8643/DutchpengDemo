@@ -18,6 +18,15 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+
+    // 자바 버전 설정.
+    android {
+
+        compileOptions {
+            sourceCompatibility JavaVersion.VERSION_1_8
+            targetCompatibility JavaVersion.VERSION_1_8
+        }
+    }
 }
 
 dependencies {
@@ -42,6 +51,10 @@ dependencies {
     implementation 'com.android.support:support-core-utils:28.0.0'
     implementation 'com.android.support:customtabs:28.0.0'
     implementation 'com.android.support:support-v4:28.0.0'
+
+
+    // Kakao Login
+    implementation "com.kakao.sdk:v2-user:2.0.2"
 
 
 }
