@@ -1,5 +1,7 @@
 package com.example.dutchpengdemo;
 
+import com.kakao.sdk.user.UserApi;
+
 public class DutchpengUser {
 
     private String userUid;
@@ -7,14 +9,13 @@ public class DutchpengUser {
     private String userEmail;
     private String userPhone;
 
-    public DutchpengUser(String userUid, String userName, String userEmail, String userPhone){
+    public DutchpengUser(String userUid, String userName, String userEmail, String userPhone) {
 
         this.userUid = userUid;
         this.userName = userName;
         this.userEmail = userEmail;
         this.userPhone = userPhone;
     }
-
 
     public String getUserUid() {
         return userUid;
