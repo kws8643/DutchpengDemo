@@ -1,17 +1,20 @@
 package LoginFragments;
 
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.Toast;
 
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 
 import com.example.dutchpengdemo.LoginActivity;
+import com.example.dutchpengdemo.MainActivity;
 import com.example.dutchpengdemo.R;
 import com.kakao.sdk.auth.LoginClient;
 import com.kakao.sdk.auth.model.OAuthToken;
@@ -36,6 +39,7 @@ public class LoginFragment extends Fragment {
 
 
     private ConstraintLayout btnEmail, btnNaver, btnKakao;
+    private Button btnMain;
 
     //네이버 OAuth params
     private OAuthLoginButton naverConnect;
@@ -84,6 +88,18 @@ public class LoginFragment extends Fragment {
             }
         });
 
+        btnMain.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                Intent toMain = new Intent(activity.getApplicationContext(), MainActivity.class);
+
+                startActivity(toMain);
+
+                activity.finish();
+            }
+        });
+
 
         return view;
 
@@ -100,13 +116,16 @@ public class LoginFragment extends Fragment {
         btnKakao = view.findViewById(R.id.btnKakao);
 
         naverConnect = view.findViewById(R.id.naverConnect);
+
+        // 추후에 없앨 버튼.
+        btnMain = view.findViewById(R.id.btnMain);
     }
 
     //--------------------------------------------------------------------------------------------
     //---------------------------------------------------------------------------------Naver OAuth
     //--------------------------------------------------------------------------------------------
 
-    private void initNaverSession(){
+    private void initNaverSession() {
 
         mNaverSession = OAuthLogin.getInstance();
 
@@ -117,7 +136,7 @@ public class LoginFragment extends Fragment {
 
     }
 
-    private void initNaverOAuthHandler(){
+    private void initNaverOAuthHandler() {
 
         mOAuthLoginHandler = new OAuthLoginHandler() {
             @Override
@@ -146,7 +165,7 @@ public class LoginFragment extends Fragment {
 
 
     //* 정보 요청은 서버단에서 하는걸로 수정. *//
-    private class RequestNaverAPI extends AsyncTask<Void, Void, String>{
+    private class RequestNaverAPI extends AsyncTask<Void, Void, String> {
 
         /*@Override
         protected void onPreExecute() {
@@ -172,13 +191,12 @@ public class LoginFragment extends Fragment {
     }
 
 
-
     //--------------------------------------------------------------------------------------------
     //---------------------------------------------------------------------------------Kakao OAuth
     //--------------------------------------------------------------------------------------------
 
 
-    private void performKakaoLogin(){
+    private void performKakaoLogin() {
 
         LoginClient.getInstance().loginWithKakaoAccount(activity.getApplicationContext(), new Function2<OAuthToken, Throwable, Unit>() {
             @Override

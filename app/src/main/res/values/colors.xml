@@ -3,4 +3,24 @@
     <color name="colorPrimary">#008577</color>
     <color name="colorPrimaryDark">#00574B</color>
     <color name="colorAccent">#D81B60</color>
+
+    <!-- Dutchpeng Palette -->
+    <!-- System Color -->
+    <color name="dutchpengBlue">#527CFC</color>
+    <!--
+    <color name="dutchpengBlueLightS">#527CFC</color>
+    <color name="dutchpengBlueLightT">#</color>
+    -->
+    <color name="dutchpengBlueDark">#2A44E0</color>
+    <color name="dutchpengYellow">#F2D157</color>
+    <color name="dutchpengYellowDark">#E69721</color>
+
+    <!-- Gray Scale -->
+    <color name="colorWhite">#FFFFFF</color>
+    <color name="colorCustomGray">#EDEDED</color>
+    <color name="colorMidGray">#A8A8A8</color>
+    <color name="colorGray">#626262</color>
+    <color name="colorDarkGray">#353535</color>
+    <color name="colorBlack">#222222</color>
+
 </resources>

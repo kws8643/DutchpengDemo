@@ -3,6 +3,7 @@ package com.example.dutchpengdemo;
 import android.app.Application;
 
 import com.google.firebase.FirebaseApp;
+import com.kakao.sdk.auth.AuthCodeHandlerActivity;
 import com.kakao.sdk.common.KakaoSdk;
 
 public class KakaoLoginApplication extends Application {

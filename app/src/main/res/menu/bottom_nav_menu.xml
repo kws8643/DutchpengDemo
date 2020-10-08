@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/navbtn_dutchpeng"
+        android:enabled="true"
+        android:icon="@drawable/ic_dutch_nav"
+        android:title="더치펭"
+        app:showAsAction="ifRoom" />
+
+    <item
+        android:id="@+id/navbtn_reservation"
+        android:enabled="true"
+        android:icon="@drawable/ic_reserve_nav"
+        android:title="예약관리"
+        app:showAsAction="ifRoom" />
+
+    <item
+        android:id="@+id/navbtn_more"
+        android:enabled="true"
+        android:icon="@drawable/ic_more_nav"
+        android:title="더보기"
+        app:showAsAction="ifRoom" />
+
+</menu>
