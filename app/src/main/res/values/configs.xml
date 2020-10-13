@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="validation_server_domain">https://asia-northeast3-dutchpeng-fb0e0.cloudfunctions.net/kakaoCustomAuth</string>
+</resources>

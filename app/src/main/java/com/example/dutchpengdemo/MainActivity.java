@@ -22,6 +22,7 @@ import com.google.gson.Gson;
 
 import java.util.Map;
 
+import AppTools.BackPressedHandler;
 import MainFragments.MainDutchpengFragment;
 import MainFragments.MainMoreFragment;
 import MainFragments.MainReservationFragment;
@@ -30,14 +31,18 @@ public class MainActivity extends AppCompatActivity {
 
     private final String MAIN_TAG = "MAINACTIVITY LOG";
 
+    // User var
     private FirebaseAuth mAuth;
     private FirebaseUser dUser;
     private FirebaseFirestore user_db = FirebaseFirestore.getInstance();
 
     public DutchpengUser dutchpengUser;
 
+    // Activity Handlers
+    private BackPressedHandler backPressedHandler;
 
-    // Fragment var.
+
+    // Fragment var
     FragmentManager manager;
 
     MainDutchpengFragment fragDutchpeng;
@@ -52,7 +57,6 @@ public class MainActivity extends AppCompatActivity {
             int id = item.getItemId();
 
             FragmentTransaction transaction = manager.beginTransaction();
-            transaction.addToBackStack(null);
 
             switch (id){
                 case R.id.navbtn_dutchpeng:
@@ -85,13 +89,17 @@ public class MainActivity extends AppCompatActivity {
         manager.beginTransaction().add(R.id.main_frame, fragDutchpeng).commit();
         btmNavView.setSelectedItemId(R.id.navbtn_dutchpeng);
 
-//        readUserDatabase();
+        readUserDatabase();
     }
 
     public void initParams() {
 
+        //User var
         mAuth = FirebaseAuth.getInstance();
         dUser = mAuth.getCurrentUser();
+
+        //Activity var
+        backPressedHandler = new BackPressedHandler(this);
 
         //Frags
         manager = getSupportFragmentManager();
@@ -149,6 +157,14 @@ public class MainActivity extends AppCompatActivity {
         Log.d(MAIN_TAG, json);
 
         Toast.makeText(getApplicationContext(), "안녕하세요, " + userName + " 회원님.", Toast.LENGTH_SHORT).show();
+    }
+
+    // back 버튼 눌렀을 때 한번 더 누르면 종료하는 메소드
+    @Override
+    public void onBackPressed() {
+
+        backPressedHandler.onBackPressed();
+
     }
 
 }

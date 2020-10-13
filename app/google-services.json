@@ -1,21 +1,21 @@
 {
   "project_info": {
-    "project_number": "132213040667",
-    "firebase_url": "https://dutchpeng.firebaseio.com",
-    "project_id": "dutchpeng",
-    "storage_bucket": "dutchpeng.appspot.com"
+    "project_number": "950552157286",
+    "firebase_url": "https://dutchpeng-fb0e0.firebaseio.com",
+    "project_id": "dutchpeng-fb0e0",
+    "storage_bucket": "dutchpeng-fb0e0.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:132213040667:android:6d5ad14222b98feec13abe",
+        "mobilesdk_app_id": "1:950552157286:android:70de4b7f38260548cf21a7",
         "android_client_info": {
           "package_name": "com.example.dutchpengdemo"
         }
       },
       "oauth_client": [
         {
-          "client_id": "132213040667-0c0o37oie9nita6n121e83ri9mapqap1.apps.googleusercontent.com",
+          "client_id": "950552157286-kehcmum4p27o5fgo3qrj0ncjo8n48u5t.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.example.dutchpengdemo",
@@ -23,20 +23,20 @@
           }
         },
         {
-          "client_id": "132213040667-f4ab8amnfgmpc12mkgtaa5oilt4e8d78.apps.googleusercontent.com",
+          "client_id": "950552157286-dlg6hiq6e71dt2o37ttdgeeem9uv771k.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyCCkShGl_LY4cP4dtIiy2YPc4qNc09yCWk"
+          "current_key": "AIzaSyAj_NUs3dtUxFwzMfmy3K-u_tLUsMXsmx4"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "132213040667-f4ab8amnfgmpc12mkgtaa5oilt4e8d78.apps.googleusercontent.com",
+              "client_id": "950552157286-dlg6hiq6e71dt2o37ttdgeeem9uv771k.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

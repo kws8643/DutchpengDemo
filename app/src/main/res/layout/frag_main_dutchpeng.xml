@@ -5,15 +5,27 @@
     android:layout_height="match_parent">
 
     <TextView
+        android:id = "@+id/text_no_group"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="더치펭 페이지 입니다."
+        android:text="아직 개설한 모임이 없네요!\n모임을 개설하시겠어요?"
         android:textColor="@color/colorBlack"
         android:textSize="20dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginTop="60dp"
+        android:layout_marginLeft="40dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+    <ImageView
+        android:id = "@+id/img_no_group"
+        android:layout_width="660dp"
+        android:layout_height="wrap_content"
+        android:src="@drawable/main_no_group"
+        app:layout_constraintTop_toBottomOf="@id/text_no_group"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
