@@ -5,19 +5,11 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import android.content.Intent;
-import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager;
-import android.content.pm.Signature;
 import android.os.Bundle;
-import android.util.Base64;
-import android.util.Log;
-import android.view.Window;
-
-import java.security.MessageDigest;
 
 import LoginFragments.LoginEmailFragment;
 import LoginFragments.LoginFragment;
-import LoginFragments.LoginSigninFragment;
+import LoginFragments.LoginEmailSigninFragment;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -27,7 +19,7 @@ public class LoginActivity extends AppCompatActivity {
     FragmentManager manager;
     LoginFragment frag_login;
     LoginEmailFragment frag_email_login;
-    LoginSigninFragment frag_email_signin;
+    LoginEmailSigninFragment frag_email_signin;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,7 +31,7 @@ public class LoginActivity extends AppCompatActivity {
 
         frag_login = new LoginFragment();
         frag_email_login = new LoginEmailFragment();
-        frag_email_signin = new LoginSigninFragment();
+        frag_email_signin = new LoginEmailSigninFragment();
 
         manager.beginTransaction().add(R.id.frame_login, frag_login).commit();
 

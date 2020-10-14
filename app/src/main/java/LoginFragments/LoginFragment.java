@@ -1,6 +1,7 @@
 package LoginFragments;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -20,6 +21,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+import com.example.dutchpengdemo.DutchpengUser;
 import com.example.dutchpengdemo.LoginActivity;
 import com.example.dutchpengdemo.MainActivity;
 import com.example.dutchpengdemo.R;
@@ -29,6 +31,8 @@ import com.google.android.gms.tasks.Task;
 import com.google.android.gms.tasks.TaskCompletionSource;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.UserInfo;
 import com.kakao.sdk.auth.LoginClient;
 import com.kakao.sdk.auth.model.OAuthToken;
 import com.kakao.sdk.user.UserApiClient;
@@ -153,6 +157,7 @@ public class LoginFragment extends Fragment {
 
     }
 
+    // performNaverLogin
     private void initNaverOAuthHandler() {
 
         mOAuthLoginHandler = new OAuthLoginHandler() {
@@ -160,11 +165,11 @@ public class LoginFragment extends Fragment {
             public void run(boolean success) {
                 if (success) {
 
+                    String accessToken = mNaverSession.getAccessToken(activity.getApplicationContext());
 
-                    // 기존 가입 회원인지 확인 필요 -> 회원이면 MainActivity로 넘어가서 객체 생성.
-                    //                        -> 아니라면 naver 연동 완료 후 signin 으로 이동.
+                    Log.w(OAUTH_LOGIN_TAG, accessToken);
 
-//                    new RequestNaverAPI().execute();
+                    firebaseAuthentication("NAVER", accessToken);
 
                     return;
 
@@ -172,7 +177,9 @@ public class LoginFragment extends Fragment {
 
                     //String errorCode;
                     //String errorDesc;
+                    String errorDesc = mNaverSession.getLastErrorDesc(activity.getApplicationContext());
 
+                    Log.e(OAUTH_LOGIN_TAG, "네이버 로그인 실패 :: " + errorDesc);
 
                     return;
                 }
@@ -181,31 +188,28 @@ public class LoginFragment extends Fragment {
     }
 
 
-    //* 정보 요청은 서버단에서 하는걸로 수정. *//
-    private class RequestNaverAPI extends AsyncTask<Void, Void, String> {
+//    // 정보 요청은 서버단에서 하는걸로 수정.
+//    private class RequestNaverAPI extends AsyncTask<Void, Void, String> {
+//
+//
+//        @Override
+//        protected String doInBackground(Void... voids) {
+//
+//            String naverRequsetUrl = "https://openapi.naver.com/v1/nid/me";
+//            String accessToken = mNaverSession.getAccessToken(activity.getApplicationContext());
+//
+//
+//            return mNaverSession.requestApi(activity.getApplicationContext(), accessToken, naverRequsetUrl);
+//        }
+//
+//        @Override
+//        protected void onPostExecute(String str) {
+//            super.onPostExecute(str);
+//
+//
+//        }
+//    }
 
-        /*@Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-        }*/
-
-        @Override
-        protected String doInBackground(Void... voids) {
-
-            String naverRequsetUrl = "https://openapi.naver.com/v1/nid/me";
-            String accessToken = mNaverSession.getAccessToken(activity.getApplicationContext());
-
-
-            return mNaverSession.requestApi(activity.getApplicationContext(), accessToken, naverRequsetUrl);
-        }
-
-        @Override
-        protected void onPostExecute(String str) {
-            super.onPostExecute(str);
-
-
-        }
-    }
 
 
     //--------------------------------------------------------------------------------------------
@@ -220,13 +224,14 @@ public class LoginFragment extends Fragment {
             @Override
             public Unit invoke(OAuthToken token, Throwable error) { //OAuthToken 객체: 액토, 리토, 각각 만료시간의 정보를 담는 객체.
                 if (error != null) {
-                    Log.e(OAUTH_LOGIN_TAG, "로그인 실패: 카카오 액토 반환 실패.", error);
+
+                    Log.e(OAUTH_LOGIN_TAG, "카카오 로그인 실패 :: ", error);
 
                 } else {
 
                     String accessToken = token.getAccessToken();
 
-                    firebaseAuthentication(accessToken);
+                    firebaseAuthentication("KAKAO", accessToken);
 
                 }
                 return null;
@@ -234,9 +239,9 @@ public class LoginFragment extends Fragment {
         });
     }
 
-    private void firebaseAuthentication(String kakaoAccessToken){
+    private void firebaseAuthentication(String oauth_provider, String accessToken){
 
-        getFirebaseJwt(kakaoAccessToken).continueWithTask(new Continuation<String, Task<AuthResult>>() {
+        getFirebaseJwt(oauth_provider, accessToken).continueWithTask(new Continuation<String, Task<AuthResult>>() {
             @Override
             public Task<AuthResult> then(@NonNull Task<String> task) throws Exception {
 
@@ -251,7 +256,29 @@ public class LoginFragment extends Fragment {
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if(task.isSuccessful()){
 
-                    // 성공적으로 Auth 성공.
+//                    activity.login();
+                    FirebaseAuth mAuth = FirebaseAuth.getInstance();
+                    FirebaseUser mUser= mAuth.getCurrentUser();
+
+                    // 이거를 잘 녹여야 sign-in provider, name, email, photoURL 을 받는다? 그럼 하단과의 차이?
+                    List<DutchpengUser> pv_data = (List<DutchpengUser>) mUser.getProviderData();
+
+
+                    String info = "이름: " + mUser.getDisplayName()
+                    + "\n이멜: " + mUser.getEmail()
+                    + "\n전번: " + mUser.getPhoneNumber()
+                    + "\nprovider ID: " + mUser.getProviderId()
+                    + "\n유저 UID: " + mUser.getUid()
+                    + "\nTenant ID: " + mUser.getTenantId()
+                    + "\nProvider Data: " + pv_data;
+
+                    if(mUser.getPhotoUrl() != null){
+
+                        info += "\n프로필 사진 주소: " + mUser.getPhotoUrl();
+                    }
+
+                    Toast.makeText(activity.getApplicationContext(), "객체 등록 성공 or 등록된 객체", Toast.LENGTH_SHORT).show();
+                    Log.w(OAUTH_LOGIN_TAG, info);
 
                 }else{
 
@@ -268,15 +295,24 @@ public class LoginFragment extends Fragment {
     }
 
 
-    private Task<String> getFirebaseJwt(final String kakaoAccessToken) {
+    private Task<String> getFirebaseJwt(String oauth_provider, final String accessToken) {
 
         final TaskCompletionSource<String> source = new TaskCompletionSource<>();
 
+        String url;
+
+        if(oauth_provider == "KAKAO"){
+            url = getResources().getString(R.string.kakao_validation_server_domain) + "/verifyToken";
+        }else if(oauth_provider == "NAVER"){
+            url = getResources().getString(R.string.naver_validation_server_domain) + "/verifyToken";
+        }else{ // 현재는 이럴 일은 없음.
+            url = null;
+        }
+
         RequestQueue queue = Volley.newRequestQueue(activity.getApplicationContext());
-        String url = getResources().getString(R.string.validation_server_domain) + "/verifyToken";
 
         HashMap<String, String> validationObject = new HashMap<>();
-        validationObject.put("token", kakaoAccessToken);
+        validationObject.put("token", accessToken);
 
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, url, new JSONObject(validationObject), new Response.Listener<JSONObject>() {
             @Override
@@ -301,7 +337,7 @@ public class LoginFragment extends Fragment {
             @Override
             public void onErrorResponse(VolleyError error) {
 
-                Log.e(OAUTH_LOGIN_TAG, error.getMessage());
+                Log.e(OAUTH_LOGIN_TAG, error.getMessage()+ " ");
 
                 source.setException(error);
             }
@@ -309,7 +345,7 @@ public class LoginFragment extends Fragment {
             @Override
             protected Map<String, String> getParams() {
                 Map<String, String> params = new HashMap<>();
-                params.put("token", kakaoAccessToken);
+                params.put("token", accessToken);
                 return params;
             }
         };

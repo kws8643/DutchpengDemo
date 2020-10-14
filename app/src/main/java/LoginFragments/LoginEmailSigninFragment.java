@@ -29,7 +29,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import java.util.HashMap;
 import java.util.Map;
 
-public class LoginSigninFragment extends Fragment {
+public class LoginEmailSigninFragment extends Fragment {
 
     private final String EMAIL_SIGNIN_TAG = "EMAIL_SIGNIN_TAG";
 
