@@ -10,20 +10,25 @@ import com.kakao.sdk.user.UserApi;
 
 // Dutchpeng User 와 잘 연계되게 녹여야 한다.
 
-public class DutchpengUser implements UserInfo {
+public class DutchpengUser {
 
+    private String provider;
     private String userUid;
     private String userName;
     private String userEmail;
     private String userPhone;
+    private String userPhotoUri;
 
 
-    public DutchpengUser(String userUid, String userName, String userEmail, String userPhone) {
+    public DutchpengUser(String provider, String userUid, String userName, String userEmail, String userPhone, String userPhotoUri) {
 
+        this.provider = provider;
         this.userUid = userUid;
         this.userName = userName;
         this.userEmail = userEmail;
         this.userPhone = userPhone;
+        this.userPhotoUri = userPhotoUri;
+
     }
 
     public void setUserUid(String userUid) {
@@ -54,44 +59,23 @@ public class DutchpengUser implements UserInfo {
         this.userPhone = userPhone;
     }
 
-    @NonNull
-    @Override
-    public String getUid() {
+    public String getUserUid() {
         return userUid;
     }
 
-    @NonNull
-    @Override
-    public String getProviderId() {
-        return null;
+    public String getUserPhotoUri() {
+        return userPhotoUri;
     }
 
-    @Nullable
-    @Override
-    public String getDisplayName() {
-        return null;
+    public void setUserPhotoUri(String userPhotoUri) {
+        this.userPhotoUri = userPhotoUri;
     }
 
-    @Nullable
-    @Override
-    public Uri getPhotoUrl() {
-        return null;
+    public String getProvider() {
+        return provider;
     }
 
-    @Nullable
-    @Override
-    public String getEmail() {
-        return null;
-    }
-
-    @Nullable
-    @Override
-    public String getPhoneNumber() {
-        return null;
-    }
-
-    @Override
-    public boolean isEmailVerified() {
-        return false;
+    public void setProvider(String provider) {
+        this.provider = provider;
     }
 }

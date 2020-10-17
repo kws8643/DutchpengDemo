@@ -14,6 +14,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -33,6 +34,9 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserInfo;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.kakao.sdk.auth.LoginClient;
 import com.kakao.sdk.auth.model.OAuthToken;
 import com.kakao.sdk.user.UserApiClient;
@@ -42,6 +46,7 @@ import com.nhn.android.naverlogin.OAuthLoginHandler;
 import com.nhn.android.naverlogin.ui.view.OAuthLoginButton;
 
 import org.json.JSONObject;
+import org.w3c.dom.Document;
 
 import java.util.HashMap;
 import java.util.List;
@@ -55,9 +60,7 @@ public class LoginFragment extends Fragment {
 
     public final String OAUTH_LOGIN_TAG = "OAUTH_LOGIN";
 
-
     LoginActivity activity;
-
 
     private ConstraintLayout btnEmail, btnNaver, btnKakao;
     private Button btnMain;
@@ -68,6 +71,7 @@ public class LoginFragment extends Fragment {
     private OAuthLoginHandler mOAuthLoginHandler;
 
     //카카오 OAuth params
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -82,7 +86,9 @@ public class LoginFragment extends Fragment {
         btnEmail.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
                 activity.changeFragment(LoginActivity.FRAGMENT_EMAIL_INDEX);
+
             }
         });
 
@@ -175,8 +181,6 @@ public class LoginFragment extends Fragment {
 
                 } else {
 
-                    //String errorCode;
-                    //String errorDesc;
                     String errorDesc = mNaverSession.getLastErrorDesc(activity.getApplicationContext());
 
                     Log.e(OAUTH_LOGIN_TAG, "네이버 로그인 실패 :: " + errorDesc);
@@ -186,30 +190,6 @@ public class LoginFragment extends Fragment {
             }
         };
     }
-
-
-//    // 정보 요청은 서버단에서 하는걸로 수정.
-//    private class RequestNaverAPI extends AsyncTask<Void, Void, String> {
-//
-//
-//        @Override
-//        protected String doInBackground(Void... voids) {
-//
-//            String naverRequsetUrl = "https://openapi.naver.com/v1/nid/me";
-//            String accessToken = mNaverSession.getAccessToken(activity.getApplicationContext());
-//
-//
-//            return mNaverSession.requestApi(activity.getApplicationContext(), accessToken, naverRequsetUrl);
-//        }
-//
-//        @Override
-//        protected void onPostExecute(String str) {
-//            super.onPostExecute(str);
-//
-//
-//        }
-//    }
-
 
 
     //--------------------------------------------------------------------------------------------
@@ -239,6 +219,8 @@ public class LoginFragment extends Fragment {
         });
     }
 
+
+    // 모든 OAuth 들이 최종적으로 오는 곳.
     private void firebaseAuthentication(String oauth_provider, String accessToken){
 
         getFirebaseJwt(oauth_provider, accessToken).continueWithTask(new Continuation<String, Task<AuthResult>>() {
@@ -251,34 +233,53 @@ public class LoginFragment extends Fragment {
 
                 return mAuth.signInWithCustomToken(firebaseToken);
             }
+
         }).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if(task.isSuccessful()){
 
-//                    activity.login();
+                    // 일단 여기까지 온거가 OAuth user 라는 것은 자명.
+                    //Firebase db 가 있는지로 판단.
                     FirebaseAuth mAuth = FirebaseAuth.getInstance();
-                    FirebaseUser mUser= mAuth.getCurrentUser();
+                    String user_uid = mAuth.getUid();
 
-                    // 이거를 잘 녹여야 sign-in provider, name, email, photoURL 을 받는다? 그럼 하단과의 차이?
-                    List<DutchpengUser> pv_data = (List<DutchpengUser>) mUser.getProviderData();
+                    FirebaseFirestore db = FirebaseFirestore.getInstance();
+                    DocumentReference docRefCheck = db.collection("Users").document(user_uid);
+
+                    docRefCheck.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+
+                            if(task.isSuccessful()){
+
+                                DocumentSnapshot document = task.getResult();
+
+                                if(document.exists()){
+
+                                    // 있으면 회원가입 쭉 진행한 객체. 확인이 되었으니 바로 로그인 시켜준다.
+                                    activity.login();
+
+                                    Log.w(OAUTH_LOGIN_TAG, "USER Logging in ID:: " + user_uid);
+
+                                }else{
+
+                                    // 없으면 회원가입 미진행 객체.
+                                    activity.changeFragment(LoginActivity.FRAGMENT_OAUTH_SIGNIN_INDEX);
+
+                                    Log.w(OAUTH_LOGIN_TAG, "First User :: " + user_uid);
+
+                                }
+
+                            }else{// 그냥 조회하는 과정이 실패.
+
+                                Log.e(OAUTH_LOGIN_TAG,"Failed to check :: ", task.getException());
+
+                            }
+                        }
+                    });
 
 
-                    String info = "이름: " + mUser.getDisplayName()
-                    + "\n이멜: " + mUser.getEmail()
-                    + "\n전번: " + mUser.getPhoneNumber()
-                    + "\nprovider ID: " + mUser.getProviderId()
-                    + "\n유저 UID: " + mUser.getUid()
-                    + "\nTenant ID: " + mUser.getTenantId()
-                    + "\nProvider Data: " + pv_data;
-
-                    if(mUser.getPhotoUrl() != null){
-
-                        info += "\n프로필 사진 주소: " + mUser.getPhotoUrl();
-                    }
-
-                    Toast.makeText(activity.getApplicationContext(), "객체 등록 성공 or 등록된 객체", Toast.LENGTH_SHORT).show();
-                    Log.w(OAUTH_LOGIN_TAG, info);
 
                 }else{
 

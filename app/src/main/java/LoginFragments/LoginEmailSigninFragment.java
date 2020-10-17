@@ -1,6 +1,5 @@
 package LoginFragments;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -23,7 +22,6 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.HashMap;
@@ -35,7 +33,7 @@ public class LoginEmailSigninFragment extends Fragment {
 
     LoginActivity activity;
     FirebaseAuth mAuth;
-    FirebaseFirestore db;
+    FirebaseFirestore email_db;
 
     EditText input_email, input_pw, input_phone, input_name;
     Button btnSignin;
@@ -44,7 +42,7 @@ public class LoginEmailSigninFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
-        View view = inflater.inflate(R.layout.frag_login_signin, container, false);
+        View view = inflater.inflate(R.layout.frag_login_signin_email, container, false);
 
         initParams();
         initView(view);
@@ -54,7 +52,7 @@ public class LoginEmailSigninFragment extends Fragment {
             @Override
             public void onClick(View view) {
 
-                createUser();
+                setUserDatabase();
             }
         });
 
@@ -65,8 +63,9 @@ public class LoginEmailSigninFragment extends Fragment {
     public void initParams() {
 
         activity = (LoginActivity) getActivity();
+
         mAuth = FirebaseAuth.getInstance();
-        db = FirebaseFirestore.getInstance();
+        email_db = FirebaseFirestore.getInstance();
 
     }
 
@@ -82,7 +81,7 @@ public class LoginEmailSigninFragment extends Fragment {
     }
 
 
-    private void createUser() {
+    private void setUserDatabase() {
 
         String userEmail = input_email.getText().toString();
         String userPw = input_pw.getText().toString();
@@ -121,7 +120,7 @@ public class LoginEmailSigninFragment extends Fragment {
         user_info.put("userPhone", input_phone.getText().toString());
 
 
-        db.collection("Users").document(user_uid).set(user_info)
+        email_db.collection("Users").document(user_uid).set(user_info)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {

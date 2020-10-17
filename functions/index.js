@@ -74,7 +74,8 @@ const { auth } = require('firebase-admin');
     const updateParams = {
       provider: oauth_provider,
       displayName: displayName,
-      email: email
+      email: email,
+      photoURL: photoURL
     };
 
     if (displayName) {
@@ -93,9 +94,15 @@ const { auth } = require('firebase-admin');
       if (error.code === 'auth/user-not-found') { // 유저를 새로 생성해야 한다면.
 
         updateParams['uid'] = userId;
+
         if (email) {
           updateParams['email'] = email;
         }
+
+        if(photoURL){
+          updateParams['photoURL'] = photoURL;
+        }
+
         return admin.auth().createUser(updateParams);
       }
       throw error;
@@ -132,6 +139,8 @@ const { auth } = require('firebase-admin');
           profileImage = body.properties.profile_image_url
         }
 
+        console.log(profileImage)
+
         return updateOrCreateUser(oauth_provider,userId, body.kakao_account.email, nickname,
           profileImage)
       }).then((userRecord) => {
@@ -160,6 +169,8 @@ const { auth } = require('firebase-admin');
           name = body.response.name
           profileImage = body.response.profile_image
         }
+
+        console.log(profileImage)
 
         return updateOrCreateUser(oauth_provider, userId, body.response.email, name,
           profileImage)

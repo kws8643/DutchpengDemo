@@ -29,7 +29,7 @@ import MainFragments.MainReservationFragment;
 
 public class MainActivity extends AppCompatActivity {
 
-    private final String MAIN_TAG = "MAINACTIVITY LOG";
+    private final String MAIN_TAG = "MAIN_ACTIVITY LOG";
 
     // User var
     private FirebaseAuth mAuth;
@@ -49,6 +49,7 @@ public class MainActivity extends AppCompatActivity {
     MainReservationFragment fragReservation;
     MainMoreFragment fragMore;
 
+    private Bundle frag_data_bundle = new Bundle();
     private BottomNavigationView btmNavView;
     private BottomNavigationView.OnNavigationItemSelectedListener btmNavListener = new BottomNavigationView.OnNavigationItemSelectedListener() {
         @Override
@@ -58,14 +59,34 @@ public class MainActivity extends AppCompatActivity {
 
             FragmentTransaction transaction = manager.beginTransaction();
 
-            switch (id){
+            switch (id) {
+
                 case R.id.navbtn_dutchpeng:
+
                     transaction.replace(R.id.main_frame, fragDutchpeng);
                     break;
+
                 case R.id.navbtn_reservation:
+
                     transaction.replace(R.id.main_frame, fragReservation);
                     break;
-                case R.id.navbtn_more:
+
+                case R.id.navbtn_more: // 유저 프로필 정보 파싱 및 넘겨줘야 함.
+
+                    String userProvider = dutchpengUser.getProvider();
+                    String userEmail = dutchpengUser.getUserEmail();
+                    String userName = dutchpengUser.getUserName();
+                    String userPhotoUri = dutchpengUser.getUserPhotoUri();
+
+                    frag_data_bundle.putString("userProvider", userProvider);
+                    frag_data_bundle.putString("userName", userName);
+                    frag_data_bundle.putString("userEmail", userEmail);
+                    frag_data_bundle.putString("userPhotoUri", userPhotoUri);
+
+                    Log.w("hey", userEmail + ", " + userName + ", " + userPhotoUri);
+
+                    fragMore.setArguments(frag_data_bundle);
+
                     transaction.replace(R.id.main_frame, fragMore);
                     break;
             }
@@ -110,7 +131,7 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    public void initView(){
+    public void initView() {
 
         btmNavView = findViewById(R.id.main_navigation);
 
@@ -143,20 +164,43 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    public void buildUser(Map<String, Object> userMap){
+    public void buildUser(Map<String, Object> userMap) {
 
+        String provider;
         String userUid = dUser.getUid();
+
+        if (userUid.substring(0,5).equals("kakao")) {
+
+            provider = "KAKAO";
+
+        } else if (userUid.substring(0,5).equals("naver")) {
+
+            provider = "NAVER";
+
+        } else {
+
+            provider = "EMAIL";
+
+        }
+
         String userEmail = dUser.getEmail();
         String userName = userMap.get("userName").toString();
         String userPhone = userMap.get("userPhone").toString();
+        String userPhotoUri = null;
 
-        dutchpengUser = new DutchpengUser(userUid, userName, userEmail, userPhone);
+        if (dUser.getPhotoUrl() != null) {
+            userPhotoUri = dUser.getPhotoUrl().toString();
+        }
+//        String userPhotoUri = "not yet";
+
+        dutchpengUser = new DutchpengUser(provider, userUid, userName, userEmail, userPhone, userPhotoUri);
 
         Gson gson = new Gson();
         String json = gson.toJson(dutchpengUser);
         Log.d(MAIN_TAG, json);
 
         Toast.makeText(getApplicationContext(), "안녕하세요, " + userName + " 회원님.", Toast.LENGTH_SHORT).show();
+
     }
 
     // back 버튼 눌렀을 때 한번 더 누르면 종료하는 메소드

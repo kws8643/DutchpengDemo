@@ -40,6 +40,8 @@ dependencies {
 
     // Google Materials Design
     implementation 'com.google.android.material:material:1.2.1'
+    implementation 'de.hdodenhof:circleimageview:3.1.0' // For Circle ImgV
+
 
     // Firebase
     implementation platform('com.google.firebase:firebase-bom:25.12.0')
