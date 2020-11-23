@@ -13,6 +13,26 @@
         android:layout_above="@id/main_navigation"
         />
 
+    <ImageView
+        android:id = "@+id/btnAddGroup"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_marginRight="7dp"
+        android:layout_toLeftOf="@id/btnNotification"
+        android:layout_alignTop="@id/btnNotification"
+        android:src = "@drawable/main_add_group"
+    />
+
+    <ImageView
+        android:id = "@+id/btnNotification"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:src = "@drawable/app_notifications"
+        android:layout_marginRight="15dp"
+        android:layout_marginTop="15dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentRight="true"
+        />
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/main_navigation"

@@ -41,6 +41,8 @@ dependencies {
     // Google Materials Design
     implementation 'com.google.android.material:material:1.2.1'
     implementation 'de.hdodenhof:circleimageview:3.1.0' // For Circle ImgV
+    implementation 'com.android.support:recyclerview-v7:28.0.0' // For Recycler View
+
 
 
     // Firebase
@@ -67,5 +69,4 @@ dependencies {
 
     // Volley.
     implementation 'com.android.volley:volley:1.1.1'
-
 }

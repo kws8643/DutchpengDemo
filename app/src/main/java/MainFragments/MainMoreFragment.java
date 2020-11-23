@@ -85,12 +85,6 @@ public class MainMoreFragment extends Fragment {
         userName = received.getString("userName");
         userEmail = received.getString("userEmail");
 
-        //        String userPhotoUri = received.getString("userPhotoUri");
-
-//        Log.w("More Frag: hey", userPhotoUri);
-
-
-
     }
 
     private void initView(View view){
@@ -111,16 +105,8 @@ public class MainMoreFragment extends Fragment {
 
     private void updateUI(){
 
-
         main_more_info_name.setText(userName + " 님");
         main_more_info_email.setText(userEmail);
-
-/*        if(userPhotoUri != null) {
-            main_more_info_profile_img.setImageURI(Uri.parse(userPhotoUri));
-        }else{
-            main_more_info_profile_img.setImageResource(R.drawable.dutchpeng_default);
-        }
-*/
 
     }
 
@@ -227,7 +213,12 @@ public class MainMoreFragment extends Fragment {
 
                     mNaverSession.refreshAccessToken(mainActivity.getApplicationContext());
 
-                    mNaverSession.logoutAndDeleteToken(mainActivity.getApplicationContext());
+                    boolean isSuccessful = mNaverSession.logoutAndDeleteToken(mainActivity.getApplicationContext());
+
+                    if(!isSuccessful){
+                        Log.e(OFF_TAG, "Error Code: " + mNaverSession.getLastErrorCode(mainActivity.getApplicationContext()));
+                        Log.e(OFF_TAG, "Error Desc: " + mNaverSession.getLastErrorDesc(mainActivity.getApplicationContext()));
+                    }
 
                 }
 

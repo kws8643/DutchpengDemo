@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="370dp"
+    android:layout_height="110dp">
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/group_img"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_marginLeft="30dp"
+        android:src="@drawable/dutchpeng_default"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent" />
+
+    <TextView
+        android:id="@+id/text_group_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="그룹명 입력"
+        android:textSize="22dp"
+        android:textStyle="bold"
+        android:textColor="@color/colorBlack"
+        android:layout_marginLeft="30dp"
+        android:layout_marginTop="5dp"
+        app:layout_constraintLeft_toRightOf="@id/group_img"
+        app:layout_constraintTop_toTopOf="@id/group_img" />
+
+    <TextView
+        android:id="@+id/text_group_recent_act"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="그룹 최근 근황 입력"
+        android:textColor="@color/colorBlack"
+        android:textSize="18dp"
+        android:layout_marginBottom="5dp"
+        app:layout_constraintBottom_toBottomOf="@id/group_img"
+        app:layout_constraintLeft_toLeftOf="@id/text_group_name" />
+</androidx.constraintlayout.widget.ConstraintLayout>

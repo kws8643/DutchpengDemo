@@ -1,12 +1,6 @@
 package com.example.dutchpengdemo;
 
-import android.net.Uri;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-
-import com.google.firebase.auth.UserInfo;
-import com.kakao.sdk.user.UserApi;
+import java.util.ArrayList;
 
 // Dutchpeng User 와 잘 연계되게 녹여야 한다.
 
@@ -17,17 +11,17 @@ public class DutchpengUser {
     private String userName;
     private String userEmail;
     private String userPhone;
-    private String userPhotoUri;
+    private ArrayList<String> userGroups;
 
 
-    public DutchpengUser(String provider, String userUid, String userName, String userEmail, String userPhone, String userPhotoUri) {
+    public DutchpengUser(String provider, String userUid, String userName, String userEmail, String userPhone, ArrayList<String> userGroups) {
 
         this.provider = provider;
         this.userUid = userUid;
         this.userName = userName;
         this.userEmail = userEmail;
         this.userPhone = userPhone;
-        this.userPhotoUri = userPhotoUri;
+        this.userGroups = userGroups;
 
     }
 
@@ -63,19 +57,19 @@ public class DutchpengUser {
         return userUid;
     }
 
-    public String getUserPhotoUri() {
-        return userPhotoUri;
-    }
-
-    public void setUserPhotoUri(String userPhotoUri) {
-        this.userPhotoUri = userPhotoUri;
-    }
-
     public String getProvider() {
         return provider;
     }
 
     public void setProvider(String provider) {
         this.provider = provider;
+    }
+
+    public ArrayList<String> getUserGroups() {
+        return userGroups;
+    }
+
+    public void setUserGroups(ArrayList<String> userGroups) {
+        this.userGroups = userGroups;
     }
 }

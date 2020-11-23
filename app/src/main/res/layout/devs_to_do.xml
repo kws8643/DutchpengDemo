@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+    <!--
+
+    // 애초에 유저에 추가할 때 그룹 uid 를 넣어주기보단 그룹 자체를 다시 넣어주는 방안?
+    그러면 데이터 중복 저장..? //
+
+    // sql 을 사용한 Firebase Firestore 데이타 가져오기.
+
+    해당 유저에 저장된 키값들을 토대로 group 컬렉션 document 서치로 가져오면
+    리스너랑 내부 함수 없이 더 간단하게 가져올 수 있을지도..?
+
+
+     1순위 (이름 못받아 옴 -> data mapping 안되고 있음 .. )
+
+    1. Recycler View 아이템간 간격? Item Decoration...
+
+    2. onActivity Result 이용해서 그룹 추가 형성. 새로 그룹 생성 한거면 recyclerview 동기화.
+
+    3. 카카오톡 메시지 보내기 API 적용하기.
+
+    -->
+
+
+    <!-- 아이디어 낙서장.
+
+    그룹 데이터에서 whereEqualTo 를 사용하여 노티스가 있을 때 1로 하고, 그걸 우선적으로
+    어레이에 추가해서 형성하는 방식으로 한다면..? 노티 있는 것들을 위에 둘 수 있지 않을까?
+
+    -->
+
+</androidx.constraintlayout.widget.ConstraintLayout>
